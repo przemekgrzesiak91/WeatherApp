@@ -1,4 +1,5 @@
-from django.http import HttpResponse
+#from django.http import HttpResponse
+from django.shortcuts import render
 from bs4 import BeautifulSoup
 from requests import get
 
@@ -39,4 +40,5 @@ def index(request):
     avg_temp = (int(temp_wp) + int(temp_onet) + int(temp_interia)) / 3
     result.append('Average - ' + str(round(avg_temp, 2)) + '°C\n')
 
-    return HttpResponse(result)
+    return render(request, "index.html")
+    #return HttpResponse(result)
