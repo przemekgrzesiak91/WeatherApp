@@ -6,7 +6,7 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1">
 		
-		<title>Compass Starter by Ariona, Rian</title>
+		<title>Porównywarka pogody</title>
 
 		<!-- Loading third party fonts -->
 		<link href="http://fonts.googleapis.com/css?family=Roboto:300,400,700|" rel="stylesheet" type="text/css">
@@ -31,8 +31,8 @@
 					<a href="index.html" class="branding">
 						<img src="{% static 'weathercompare/images/logo.png' %}" alt="" class="logo">
 						<div class="logo-type">
-							<h1 class="site-title">Weather Comparison</h1>
-							<small class="site-description">One place to compare weather based on famous weather sites.</small>
+							<h1 class="site-title">Porównywarka pogody</h1>
+							<small class="site-description">Zestawienie warunków atmosferycznych z różnych stron pogodowych.</small>
 						</div>
 					</a>
 
@@ -52,60 +52,27 @@
 			<div class="forecast-table">
 				<div class="container">
 					<div class="forecast-container">
-						<div class="today forecast">
-							<div class="forecast-header">
-								<div class="day">Google</div>
-								<div class="date">6 Oct</div>
-							</div> <!-- .forecast-header -->
-							<div class="forecast-content">
-								<div class="location">New York</div>
-								<div class="degree">
-									<div class="num">23<sup>o</sup>C</div>
-									<div class="forecast-icon">
-										<img src="{% static 'weathercompare/images/icons/icon-1.svg' %}" alt="" width=90>
-									</div>	
-								</div>
-								<span><img src="{% static 'weathercompare/images/icon-umberella.png' %}" alt="">20%</span>
-								<span><img src="{% static 'weathercompare/images/icon-wind.png' %}" alt="">18km/h</span>
-								<span><img src="{% static 'weathercompare/images/icon-compass.png' %}" alt="">East</span>
-							</div>
-						</div>
+
+						{% for item in list %}
 						<div class="forecast">
 							<div class="forecast-header">
-								<div class="day">Interia</div>
+								<div class="degree">{{item.0}}</div>
 							</div> <!-- .forecast-header -->
 							<div class="forecast-content">
-								<div class="forecast-icon">
-									<img src="{% static 'weathercompare/images/icons/icon-3.svg' %}" alt="" width=48>
-								</div>
-								<div class="degree">23<sup>o</sup>C</div>
-								<small>18<sup>o</sup></small>
+								{{item.1}}
 							</div>
-						</div>
-						<div class="forecast">
-							<div class="forecast-header">
-								<div class="day">WP</div>
-							</div> <!-- .forecast-header -->
 							<div class="forecast-content">
-								<div class="forecast-icon">
-									<img src="{% static 'weathercompare/images/icons/icon-5.svg' %}" alt="" width=48>
-								</div>
-								<div class="degree">23<sup>o</sup>C</div>
-								<small>18<sup>o</sup></small>
+								{{item.2}}
 							</div>
-						</div>
-						<div class="forecast">
-							<div class="forecast-header">
-								<div class="day">Onet</div>
-							</div> <!-- .forecast-header -->
 							<div class="forecast-content">
-								<div class="forecast-icon">
-									<img src="{% static 'weathercompare/images/icons/icon-7.svg' %}" alt="" width=48>
-								</div>
-								<div class="degree">23<sup>o</sup>C</div>
-								<small>18<sup>o</sup></small>
+								{{item.3}}
+							</div>
+							<div class="forecast-content">
+								{{item.4}}
 							</div>
 						</div>
+						{% endfor %}
+
 					</div>
 				</div>
 			</div>
