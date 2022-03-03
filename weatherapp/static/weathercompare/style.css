@@ -46,7 +46,8 @@ textarea {
   font-family: sans-serif; }
 
 body {
-  margin: 0; }
+  margin: 0;
+  overflow: hidden;}
 
 a {
   background: transparent; }
@@ -220,7 +221,7 @@ body {
 
 h1, h2, h3, h4, h5, h6 {
   font-weight: 700;
-  margin: 0 0 20px;
+  margin: 0 0 5px;
   line-height: normal; }
 
 hr {
@@ -1114,7 +1115,7 @@ form textarea {
  * Header Styles
  */
 .site-header {
-  padding: 50px 0; }
+  padding: 10px 0; }
   .site-header .branding {
     float: left; }
     .site-header .branding .logo, .site-header .branding .logo-type {
@@ -1132,6 +1133,11 @@ form textarea {
       font-size: 0.7142857143em;
       display: block;
       color: #bfc1c8; }
+
+.city {
+    font-size: 30px;
+
+}
 
 .main-navigation {
   float: right; }
@@ -1207,7 +1213,7 @@ form textarea {
 
 .hero {
   background-size: cover;
-  padding: 70px 0;
+  padding: 80px 0;
   min-height: 350px; }
 
 .find-location {
@@ -1224,6 +1230,7 @@ form textarea {
     right: 5px;
     bottom: 5px;
     padding: 0 40px; }
+
 
 .forecast-container {
   width: 100%;
@@ -1287,11 +1294,14 @@ form textarea {
       background: rgba(0, 0, 0, 0.1);
       padding: 10px;
       text-align: center;
-      font-weight: 400; }
+      font-weight: 400;
+      font-size: 24px;
+      }
     .forecast-container .forecast .forecast-icon {
-      height: 50px; }
+      height: 80px; }
     .forecast-container .forecast .forecast-content {
-      padding: 50px 20px 10px;
+      padding: 20px 20px 10px;
+      height: 70px;
       text-align: center; }
       .forecast-container .forecast .forecast-content .forecast-icon {
         margin-bottom: 20px; }
@@ -1301,7 +1311,7 @@ form textarea {
         color: white;
         font-weight: 700; }
       .forecast-container .forecast .forecast-content small {
-        font-size: 16px;
+        font-size: 20px;
         font-size: 1.1428571429em; }
 
 .fullwidth-block {

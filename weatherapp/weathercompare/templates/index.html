@@ -28,41 +28,41 @@
 		<div class="site-content">
 			<div class="site-header">
 				<div class="container">
-					<a href="index.html" class="branding">
-						<img src="{% static 'weathercompare/images/logo.png' %}" alt="" class="logo">
-						<div class="logo-type">
-							<h1 class="site-title">Porównywarka pogody</h1>
-							<small class="site-description">Zestawienie warunków atmosferycznych z różnych stron pogodowych.</small>
-						</div>
-					</a>
-
-
+					<img src="{% static 'weathercompare/images/logo.png' %}" alt="" class="logo">
+					<div class="logo-type">
+						<h1 class="site-title">Porównywarka pogody</h1>
+						<small class="site-description">Zestawienie warunków atmosferycznych z różnych stron pogodowych.</small>
+					</div>
 				</div>
 			</div> <!-- .site-header -->
 
 			<div class="hero" data-bg-image="{% static 'weathercompare/images/banner.jpg' %}">
 				<div class="container">
-					<form action="#" class="find-location">
-						<input type="text" placeholder="Find your location...">
-						<input type="submit" value="Find">
-					</form>
 
+					<form action="#" class="find-location" method="POST" action="{% url 'index' %}">
+						{% csrf_token %}
+						<input type="text" placeholder="Wpisz miasto ..." name = 'city'>
+						<input type="submit" value="Szukaj">
+					</form>
 				</div>
 			</div>
+
+
+
+
 			<div class="forecast-table">
 				<div class="container">
 					<div class="forecast-container">
-
-						{% for item in list %}
+						{% for item in data %}
 						<div class="forecast">
 							<div class="forecast-header">
-								<div class="degree">{{item.0}}</div>
+								<div class="degree">{{item.0|safe}}</div>
 							</div> <!-- .forecast-header -->
 							<div class="forecast-content">
 								{{item.1}}
 							</div>
 							<div class="forecast-content">
-								{{item.2}}
+								{{item.2|safe}}
 							</div>
 							<div class="forecast-content">
 								{{item.3}}

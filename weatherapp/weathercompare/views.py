@@ -1,21 +1,45 @@
-#from django.http import HttpResponse
 from django.shortcuts import render
 from bs4 import BeautifulSoup
 from requests import get
 import re
 
+try:
+    from googlesearch import search
+except ImportError:
+    print("No module named 'google' found")
+
+
 def index(request):
-    # add links from google search
-    # add google here
+    data = []
+    city = "Warszawa"
+    context = {"data": data}
 
-    data = {}
-    list = []
-    data['list'] = list
+    if request.method == "POST":
+        city = request.POST['city']
 
-    list.append(('Serwis','Temperatura','Zachmurzenie','Ciśnienie', 'Wiatr'))
+    data.append(('<span style="color: rgb(66, 164, 245)">'+city+'</span>', 'Temperatura', 'Zachmurzenie', 'Ciśnienie', 'Wiatr'))
+
+    #search urls
+    query = "pogoda " + city
+
+    for url in search(query, tld="co.in", num=10, stop=10, pause=2):
+        if 'onet' in url:
+            URL_onet = url
+        elif 'interia' in url and 'szczegolowa' in url:
+            URL_interia = url
+        elif 'wp' in url:
+            URL_wp = url
 
     # onet
-    URL = 'https://pogoda.onet.pl/prognoza-pogody/kepno-300790'
+    data.append(scrap_onet(URL_onet))
+    # interia
+    data.append(scrap_interia(URL_interia))
+    # wp
+    data.append(scrap_wp(URL_wp))
+
+    return render(request, "index.html", context)
+
+def scrap_onet(URL):
     page = get(URL)
 
     bs = BeautifulSoup(page.content, features="html.parser")
@@ -28,12 +52,24 @@ def index(request):
                 wind_onet = span.get_text()
             if 'hPa' in span.get_text():
                 press_onet = span.get_text()
+    return ('Onet', temp_onet + '°C', cloud_onet, press_onet, wind_onet)
 
+def scrap_wp(URL):
+    page = get(URL)
 
-    list.append(('Onet', temp_onet + '°C', cloud_onet, press_onet, wind_onet))
+    bs = BeautifulSoup(page.content, features="html.parser")
 
-    # interia
-    URL = 'https://pogoda.interia.pl/prognoza-dlugoterminowa-kepno,cId,13329'
+    for main in bs.find_all('table', class_='table'):
+        temp_wp = main.find('span', class_='temp').get_text()
+        cloud_wp = main.find('small').get_text()
+        for small in main.find_all('small'):
+            if 'km/h' in small.get_text():
+                wind_wp = small.get_text().split(' ')[1] + ' km/h'
+            if 'hPa' in small.get_text():
+                press_wp = small.get_text().split(' ')[1] + ' hPa'
+    return ('WP', temp_wp + '°C', cloud_wp, press_wp, wind_wp)
+
+def scrap_interia(URL):
     page = get(URL)
 
     bs = BeautifulSoup(page.content, features="html.parser")
@@ -47,27 +83,4 @@ def index(request):
             if 'hPa' in span.get_text():
                 press_interia = re.sub(' +', ' ', span.get_text())
 
-    list.append(('Interia', temp_interia+'°C', cloud_interia, press_interia, wind_interia))
-    # wp
-    URL = 'https://pogoda.wp.pl/pogoda-dlugoterminowa/kepno/3096338'
-    page = get(URL)
-
-    bs = BeautifulSoup(page.content, features="html.parser")
-
-    for main in bs.find_all('table', class_='table'):
-        temp_wp = main.find('span', class_='temp').get_text()
-        cloud_wp = main.find('small').get_text()
-        for small in main.find_all('small'):
-            if 'km/h' in small.get_text():
-                wind_wp = small.get_text().split(' ')[1] + ' km/h'
-            if 'hPa' in small.get_text():
-                press_wp = small.get_text().split(' ')[1] + ' hPa'
-    list.append(('WP', temp_wp + '°C', cloud_wp, press_wp, wind_wp))
-
-    # avg_temp = (int(temp_wp) + int(temp_onet) + int(temp_interia)) / 3
-    # list.append(('Average', str(round(avg_temp,2))+'°C'))
-
-
-
-    return render(request, "index.html", data)
-    #return HttpResponse(result)
+    return ('Interia', temp_interia+'°C', cloud_interia, press_interia, wind_interia)
